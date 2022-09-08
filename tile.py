@@ -22,6 +22,9 @@ class Tile(pygame.sprite.Sprite):
 		self.rect.x = position[0]
 		self.rect.y = position[1]
 
+	def get_position(self):
+		return (self.rect.x, self.rect.y)
+
 	def set_image(self, image):
 		self.image = image
 		self.image = pygame.transform.scale(self.image, self.size)

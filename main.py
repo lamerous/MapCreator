@@ -14,7 +14,7 @@ menu_surf = pygame.Surface((MENU_WIDTH, MENU_HEIGHT))
 tile_ch_surf = pygame.Surface((TILE_CH_WIDTH, TILE_CH_HEIGHT))  # tile_ch -- tile_chooser
 
 editor = Editor(editor_surf)
-editor.draw_tiles(3, 8, TILE_SIZE)
+editor.draw_tiles(5, 10, TILE_SIZE)
 
 menu = Menu(menu_surf)
 
@@ -26,8 +26,8 @@ while run:
 			run = False
 
 	editor_surf.fill(pygame.Color("darkred"))
-	menu_surf.fill(pygame.Color("darkorange"))
-	tile_ch_surf.fill(pygame.Color("darkgreen"))
+	#menu_surf.fill(pygame.Color("darkorange"))
+	#tile_ch_surf.fill(pygame.Color("darkgreen"))
 
 	editor.update()
 	menu.update()

@@ -11,9 +11,14 @@ class Editor:
 		for i in range(cols):
 			for j in range(rows):
 				pos = (i * size[0], j * size[1])
-				tile = Tile(size, pos, fill_color=(10, 100, 100))
+				tile = Tile(size, pos, fill_color=(100, 100, 100))
 				self.tile_group.add(tile)
 
 
 	def update(self):
+		# draw selection rect
+		for tile in self.tile_group:
+			pos = tile.get_position()
+			if self.rect.x > 
+
 		self.tile_group.draw(self.surface)
