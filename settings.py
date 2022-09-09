@@ -1,19 +1,25 @@
-# window settings
-
+# window
 WIN_WIDTH = 1280
 WIN_HEIGHT = 720
 WIN_TITLE = "Map Creator"
 
+# editor
 EDITOR_WIDTH = WIN_WIDTH / 1.2
 EDITOR_HEIGHT = WIN_HEIGHT / 1.2
 EDITOR_POS = (0, 0)
 
+# menu
 MENU_WIDTH = WIN_WIDTH / 1.2
 MENU_HEIGHT = WIN_HEIGHT - EDITOR_HEIGHT
 MENU_POS = (0, EDITOR_HEIGHT)
 
+# tile chooser
 TILE_CH_WIDTH = WIN_WIDTH - EDITOR_WIDTH   # tile_ch -- tile chooser
 TILE_CH_HEIGHT = WIN_HEIGHT
 TILE_CH_POS = (EDITOR_WIDTH, 0)
+TILES_IN_ROW = 4
 
+# tiles
 TILE_SIZE = (64, 64)
+
+FPS = 60

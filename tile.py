@@ -9,6 +9,8 @@ class Tile(pygame.sprite.Sprite):
 		self.fill_color = fill_color
 		self.border_color = border_color
 
+		self.is_choosen = False    # True when cursor on sprite
+
 		if image:
 			self.set_image(image)
 		else:
@@ -22,8 +24,19 @@ class Tile(pygame.sprite.Sprite):
 		self.rect.x = position[0]
 		self.rect.y = position[1]
 
+	def add_image(self, fill_image):
+		fill_image = pygame.transform.scale(fill_image, self.size)
+		self.image.blit(fill_image, (0, 0))
+
+
 	def get_position(self):
 		return (self.rect.x, self.rect.y)
+
+	def get_rect(self):
+		return self.rect
+
+	def get_size(self):
+		return self.size
 
 	def set_image(self, image):
 		self.image = image
