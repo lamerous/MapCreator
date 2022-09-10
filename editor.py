@@ -2,13 +2,13 @@ import pygame
 from tile import Tile
 
 class Editor:
-	def __init__(self, surface):
+	def __init__(self, surface, *, fill_color = (0, 0, 0), tile_color = (0, 0, 0)):
 		self.surface = surface
 
-		self.tile_group = pygame.sprite.Group()
+		self.fill_color = fill_color
+		self.tile_color = tile_color
 
-		self.test_image = [pygame.image.load("tiles/sprite2.png"), pygame.image.load("tiles/sprite1.png")]
-		self.iter = 0
+		self.tile_group = pygame.sprite.Group()
 
 		self.fill_image = None
 
@@ -20,9 +20,11 @@ class Editor:
 		for i in range(cols):
 			for j in range(rows):
 				pos = (i * size[0], j * size[1])
-				tile = Tile(size, pos, fill_color=(100, 100, 100))
+				tile = Tile(size, pos, fill_color=self.tile_color)
 				self.tile_group.add(tile)
 
+	def set_fill_image(self, image):
+		self.fill_image = image
 
 	def update(self, mouse_buttons):
 		# mouse_buttons = {1: bool, 2: bool, 3: bool} 
@@ -31,7 +33,7 @@ class Editor:
 
 		mouse_x, mouse_y = pygame.mouse.get_pos()
 
-		self.surface.fill((pygame.Color("darkred")))
+		self.surface.fill(self.fill_color)
 		self.tile_group.draw(self.surface)
 
 		for tile in self.tile_group:
@@ -51,12 +53,9 @@ class Editor:
 
 				# left mouse button
 				if mouse_buttons[1]:
-					if not self.fill_image:
-						if self.map.count({pos: self.test_image[self.iter]}) < 1:
-							self.map.append({pos: self.test_image[self.iter]})
-							self.iter += 1
-							if self.iter > 1:
-								self.iter = 0
+					if self.fill_image:
+						if self.map.count({pos: self.fill_image}) < 1:
+							self.map.append({pos: self.fill_image})
 					else:
 						print("No choosen image")
 

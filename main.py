@@ -19,11 +19,11 @@ editor_surf = pygame.Surface((EDITOR_WIDTH, EDITOR_HEIGHT))
 menu_surf = pygame.Surface((MENU_WIDTH, MENU_HEIGHT))
 tile_ch_surf = pygame.Surface((TILE_CH_WIDTH, TILE_CH_HEIGHT))  # tile_ch -- tile_chooser
 
-editor = Editor(editor_surf)
+editor = Editor(editor_surf, fill_color=(100, 0, 0), tile_color=(100, 100, 100))
 editor.draw_tiles(5, 10, TILE_SIZE)
 
-tile_ch = TileChooser(tile_ch_surf)
-tile_ch.load_images("tiles", TILES_IN_ROW)
+tile_ch = TileChooser(tile_ch_surf, tiles_in_row=TILES_IN_ROW)
+tile_ch.load_images("tiles")
 
 menu = Menu(menu_surf)
 
@@ -43,11 +43,18 @@ while run:
 		if event.type == pygame.MOUSEBUTTONDOWN:
 			mouse_buttons[event.button] = True
 
+		if event.type == pygame.KEYDOWN:
+			if event.key == pygame.K_w:
+				tile_ch.zoom(-1)
+			if event.key == pygame.K_s:
+				tile_ch.zoom(1)
+
 	#editor_surf.fill(pygame.Color("darkred"))
-	#menu_surf.fill(pygame.Color("darkorange"))
+	menu_surf.fill(pygame.Color("darkcyan"))
 	#tile_ch_surf.fill(pygame.Color("darkgreen"))
 
 	editor.update(mouse_buttons)
+	tile_ch.update(editor, mouse_buttons)
 	menu.update()
 
 	screen.blit(editor_surf, EDITOR_POS)
