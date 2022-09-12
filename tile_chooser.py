@@ -2,22 +2,31 @@ import pygame
 from tile import Tile
 from settings import *
 import os
+from math import ceil
 
 class TileChooser:
-	def __init__(self, surface, *, fill_color = (0, 0, 0), tiles_in_row = 4):
+	def __init__(self, surface, start_position, *, fill_color = (0, 0, 0), tiles_in_row = 4):
 		self.surface = surface
 
 		self.fill_color = fill_color
 
 		self.tiles_in_row = tiles_in_row
 
-		self.position = [0, 0]
+		self.tile_size = 0, 0
 
-		self.original_images = []   # for save original images to protect from damage images when resizing
+		self.position = start_position
+
+		self.count = 0
+
+		self.original_images = []   # save original images to protect them from damage when resizing
 		self.tile_group = pygame.sprite.Group()
+
+	def calculate_new_height(self):
+		return ceil((self.count+self.tiles_in_row) / self.tiles_in_row) * self.tile_size[1]
 
 	def load_images(self, path):
 		x, y = 0, 0
+		count = 0
 		for i in os.listdir(path):
 			# if last 4 symbols
 			if i[-4:] == '.png':
@@ -26,6 +35,7 @@ class TileChooser:
 					y += 1
 
 				size = (int(self.surface.get_width() / self.tiles_in_row), int(self.surface.get_width() / self.tiles_in_row))
+				self.tile_size = size
 				pos = x * size[0], y * size[1]
 				image = pygame.image.load(path+'/'+i)
 				tile = Tile(size, pos, image)
@@ -33,10 +43,20 @@ class TileChooser:
 				self.tile_group.add(tile)
 
 				x += 1
+				self.count += 1
 
-	def scroll(self):
-		keys = pygame.key.get_pressed()
+	def scroll(self, speed, win_height):
+		if speed < 0:
+			if self.position[1] + speed - win_height > -self.surface.get_height():
+				self.position[1] += speed
+		else:
+			if self.position[1] < 0:
+				self.position[1] += speed
 
+		return self.position
+
+	def set_new_surface(self, surface):
+		self.surface = surface
 
 	def update(self, editor, mouse_buttons=None):
 		# mouse_buttons = {1: bool, 2: bool, 3: bool} 
@@ -44,7 +64,7 @@ class TileChooser:
 		# bool - True or False
 
 		mouse_pos = pygame.mouse.get_pos()
-		mouse_x, mouse_y = mouse_pos[0] - EDITOR_WIDTH, mouse_pos[1]
+		mouse_x, mouse_y = mouse_pos[0] - EDITOR_WIDTH, mouse_pos[1] - self.position[1]
 
 		self.surface.fill(self.fill_color)
 		self.tile_group.draw(self.surface)
@@ -68,13 +88,9 @@ class TileChooser:
 				if mouse_buttons[1]:
 					editor.set_fill_image(tile.get_image())
 
-	def zoom(self, scroll_dir):
-		# scroll_dir
-		#  1 zoom in 
-		# -1 zoom out
-
-		if self.tiles_in_row + scroll_dir != 0:
-			self.tiles_in_row += scroll_dir
+	def zoom(self, zoom_dir):
+		if self.tiles_in_row + zoom_dir != 0:
+			self.tiles_in_row += zoom_dir
 
 		new_tile_group = pygame.sprite.Group()
 

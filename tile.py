@@ -15,7 +15,7 @@ class Tile(pygame.sprite.Sprite):
 			self.image = pygame.Surface(size)
 			self.image.fill(fill_color)
 
-		pygame.draw.rect(self.image, self.border_color, (0, 0) + self.size, 1)
+		pygame.draw.rect(self.image, self.border_color, (0, 0, self.size[0], self.size[1]), 1)
 
 		self.rect = self.image.get_rect()
 
